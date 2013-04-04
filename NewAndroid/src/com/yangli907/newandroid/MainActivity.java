@@ -15,31 +15,87 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 
 public class MainActivity extends Activity {
 	private String connUrl = "http://www.simsimi.com/talk.htm";
 	private String baseUrl = "http://www.simsimi.com/func/req";
 	private EditText inputField = null;
 	private EditText outputField = null;
+	private ProgressBar progressBar = null;
 	private String inputText = "";
 	private String response = "";
+	private String[] dontKnow = {    
+			"我不明白你的意思。",
+		    "我不太懂你在说什么。",
+		    "我们能换一个话题吗？",
+		    "你高估我了，我没有你想的那么聪明。",
+		    "我不懂你在说什么。",
+		    "我对你的问题不太感兴趣。",
+		    "我还没想好怎么回答你的问题呢。",
+		    "我应该怎么回答你这个奇怪的问题呢？",
+		    "我不太懂你的话。",
+		    "你能跟我解释一下吗？",
+		    "你的问题让我很纠结。",
+		    "你的问题让我真的很纠结。",
+		    "你的问题难倒我了。",
+		    "我没听说过那个东西。",
+		    "天天被你们拉去聊天，我都很少了解时事了。",
+		    "不要问我那么刁钻古怪的问题啦！",
+		    "我对那个不感兴趣，跟我说说你最喜欢的明星吧。",
+		    "我不关心那个，跟我说说你最喜欢的明星吧。",
+		    "我对那个不感兴趣，跟我说说最近的新闻吧。",
+		    "我不关心那个，跟我说说最近的新闻吧。"
+		    };
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
 		inputField = (EditText)findViewById(R.id.inputField);
 		outputField = (EditText)findViewById(R.id.outputField);
+		progressBar = (ProgressBar)findViewById(R.id.progressBar1);
+		progressBar.setVisibility(View.INVISIBLE);
 		
 	}
 	
 	public void onSubmit(View v){
-		inputText = inputField.getText().toString();
-		response = sendRequest(inputText);
-		outputField.setText(response);
+		
+		Thread thread = new Thread() {
+			public void run() {
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						progressBar.setVisibility(View.VISIBLE);
+						inputText = inputField.getText().toString();
+					}
+				});
+				try{
+					response = sendRequest(inputText);
+				} 
+				catch (Exception e) {
+					e.printStackTrace();
+				}
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						outputField.setText(response);
+						progressBar.setVisibility(View.INVISIBLE);
+						}
+				});
+			}
+		};
+		
+		thread.start();
+		
+
 	}
 	
 	public void cleanInput(View v){
@@ -81,14 +137,9 @@ public class MainActivity extends Activity {
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
-			} finally {
-				if (reader != null) {
-					try {
-						reader.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
+			} 
+			finally {
+					reader.close();
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -101,8 +152,7 @@ public class MainActivity extends Activity {
 			result = req.getString("response");
 			return result;
 		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			result = dontKnow[(int) (Math.random()*100%dontKnow.length)];
 		}
 		return result;
 		
@@ -131,5 +181,4 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
 }
