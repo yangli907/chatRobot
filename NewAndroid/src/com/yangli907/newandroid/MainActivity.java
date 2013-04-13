@@ -16,18 +16,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-
-import com.yangli907.newandroid.R.string;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
 	private String connUrl = "http://www.simsimi.com/talk.htm";
@@ -36,8 +34,10 @@ public class MainActivity extends Activity {
 	private EditText outputField = null;
 	private ProgressBar progressBar = null;
 	private TextToSpeech tts = null;
+	private TextView debugField = null;
 	private String inputText = "";
 	private String response = "";
+	private static boolean debugMode = true;
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1001;
 	private String[] dontKnow = {    
 			"我不明白你的意思。",
@@ -66,7 +66,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
 		inputField = (EditText)findViewById(R.id.inputField);
 		outputField = (EditText)findViewById(R.id.outputField);
 		progressBar = (ProgressBar)findViewById(R.id.progressBar1);
@@ -74,18 +73,22 @@ public class MainActivity extends Activity {
 		tts = new TextToSpeech(this, null);
 	}
 	
+	Object lock = new Object(); //test the synchronization for UI/background thread
 	public void onSubmit(View v){
+		
 		Thread thread = new Thread() {
 			public void run() {
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
-						progressBar.setVisibility(View.VISIBLE);
 						inputText = inputField.getText().toString();
+						progressBar.setVisibility(View.VISIBLE);
+						Log.i("*****Text from UI******",inputText);
+						synchronized(lock){lock.notify();}
 					}
 				});
 				try{
+					synchronized(lock){lock.wait();}
 					response = sendRequest(inputText);
 				} 
 				catch (Exception e) {
@@ -113,9 +116,10 @@ public class MainActivity extends Activity {
 	
 	private String sendRequest(String inputText){
 		List<String> cookies = getConnCookie(connUrl);
-		String msg = "天气不错 right?";
+		String msg = "";
 		String locale = "zh";
 		try {
+			Log.i("*****inputText*****", inputText);
 			msg = URLEncoder.encode(inputText,"UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
@@ -131,7 +135,9 @@ public class MainActivity extends Activity {
 		String result = "";
 		try {
 			URL url = new URL(baseUrl+request);
-
+			if(debugMode==true){
+				Log.i("*****Request******", url.toString());
+			}
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.addRequestProperty("X-Forwarded-For", "10.2.0.124");
 			con.addRequestProperty("Cookie", cookie);

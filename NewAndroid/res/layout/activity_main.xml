@@ -73,4 +73,6 @@
         android:onClick="onSpeak"
         android:text="@string/voice" />
 
+
+
 </RelativeLayout>
