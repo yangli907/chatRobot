@@ -9,18 +9,25 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+
+import com.yangli907.newandroid.R.string;
 
 public class MainActivity extends Activity {
 	private String connUrl = "http://www.simsimi.com/talk.htm";
@@ -28,8 +35,10 @@ public class MainActivity extends Activity {
 	private EditText inputField = null;
 	private EditText outputField = null;
 	private ProgressBar progressBar = null;
+	private TextToSpeech tts = null;
 	private String inputText = "";
 	private String response = "";
+	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1001;
 	private String[] dontKnow = {    
 			"我不明白你的意思。",
 		    "我不太懂你在说什么。",
@@ -62,11 +71,10 @@ public class MainActivity extends Activity {
 		outputField = (EditText)findViewById(R.id.outputField);
 		progressBar = (ProgressBar)findViewById(R.id.progressBar1);
 		progressBar.setVisibility(View.INVISIBLE);
-		
+		tts = new TextToSpeech(this, null);
 	}
 	
 	public void onSubmit(View v){
-		
 		Thread thread = new Thread() {
 			public void run() {
 				runOnUiThread(new Runnable() {
@@ -92,7 +100,6 @@ public class MainActivity extends Activity {
 				});
 			}
 		};
-		
 		thread.start();
 		
 
@@ -118,6 +125,7 @@ public class MainActivity extends Activity {
 		
 		return getResponse(cookies.get(0),baseUrl,request);
 	}
+	
 	private String getResponse(String cookie, String baseUrl, String request){
 		StringBuilder builder = new StringBuilder();
 		String result = "";
@@ -175,6 +183,46 @@ public class MainActivity extends Activity {
 		return reader;
 	}
 
+	public void onSpeak(View v){
+		//tts.speak("测试小黄鸡", TextToSpeech.QUEUE_FLUSH, null);
+		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+		 
+		  // Specify the calling package to identify your application
+		  intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getClass()
+		    .getPackage().getName());
+		 
+		  // Display an hint to the user about what he should say.
+		 
+		  // Given an hint to the recognizer about what the user is going to say
+		  //There are two form of language model available
+		  //1.LANGUAGE_MODEL_WEB_SEARCH : For short phrases
+		  //2.LANGUAGE_MODEL_FREE_FORM  : If not sure about the words or phrases and its domain.
+		intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+		    RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
+		 
+		  int noOfMatches = 5;
+		  // Specify how many results you want to receive. The results will be
+		  // sorted where the first result is the one with higher confidence.
+		  intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, noOfMatches);
+		  //Start the Voice recognizer activity for the result.
+		  startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
+	}
+	
+	@Override
+	 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	  if (requestCode == VOICE_RECOGNITION_REQUEST_CODE)
+	 
+	   //If Voice recognition is successful then it returns RESULT_OK
+	   if(resultCode == RESULT_OK) {
+	 
+	    ArrayList<String> textMatchList = data
+	    .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+	    inputField.setText(textMatchList.get(0).toString());
+	   }
+	  
+	  super.onActivityResult(requestCode, resultCode, data);
+	 }
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

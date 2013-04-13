@@ -64,4 +64,13 @@
         <requestFocus />
     </EditText>
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView2"
+        android:layout_toRightOf="@+id/inputField"
+        android:onClick="onSpeak"
+        android:text="@string/voice" />
+
 </RelativeLayout>

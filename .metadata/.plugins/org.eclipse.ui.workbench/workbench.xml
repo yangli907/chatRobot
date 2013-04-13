@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="19" version="2.0">
+<workbench progressCount="20" version="2.0">
 <workbenchAdvisor/>
-<window height="768" maximized="true" width="1016" x="446" y="76">
+<window height="768" width="1012" x="557" y="124">
 <fastViewData fastViewLocation="1024"/>
 <perspectiveBar>
 <itemSize x="250"/>
@@ -15,10 +15,10 @@
 <coolItem id="adt.actionSet.wizards" itemType="typeToolBarContribution" x="40" y="30"/>
 <coolItem id="org.eclipse.debug.ui.launchActionSet" itemType="typeToolBarContribution" x="156" y="30"/>
 <coolItem id="org.eclipse.jdt.ui.JavaElementCreationActionSet" itemType="typeToolBarContribution" x="88" y="30"/>
-<coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="88" y="30"/>
+<coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="162" y="30"/>
 <coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="124" y="30"/>
 <coolItem id="org.eclipse.wst.xml.ui.perspective.NewFileToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
-<coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="68" y="30"/>
+<coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.debug.ui.launch.toolbar" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="org.eclipse.debug.ui.main.toolbar" itemType="typeToolBarContribution" x="40" y="30"/>
 <coolItem id="group.nav" itemType="typeGroupMarker"/>
@@ -48,7 +48,7 @@
 </editor>
 <editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MainActivity.java" partName="MainActivity.java" path="/home/yangli907/mobile/workspace/NewAndroid/src/com/yangli907/newandroid/MainActivity.java" title="MainActivity.java" tooltip="NewAndroid/src/com/yangli907/newandroid/MainActivity.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/NewAndroid/src/com/yangli907/newandroid/MainActivity.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1410" selectionTopPixel="268"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="6515" selectionTopPixel="2934"/>
 </editor>
 <editor id="com.android.ide.eclipse.editors.manifest.ManifestEditor" name="AndroidManifest.xml" partName="NewAndroid Manifest" path="/home/yangli907/mobile/workspace/NewAndroid/AndroidManifest.xml" title="NewAndroid Manifest" tooltip="NewAndroid/AndroidManifest.xml" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/NewAndroid/AndroidManifest.xml"/>
@@ -79,6 +79,10 @@
 <view id="com.android.ide.eclipse.ddms.views.NetworkStatsView" partName="Network Statistics"/>
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
+<expanded>
+<category IMemento.internal.id="Errors"/>
+<category IMemento.internal.id="Warnings (2 items)"/>
+</expanded>
 <columnWidths org.eclipse.ui.ide.locationField="105" org.eclipse.ui.ide.markerType="105" org.eclipse.ui.ide.pathField="140" org.eclipse.ui.ide.resourceField="105" org.eclipse.ui.ide.severityAndDescriptionField="350"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.resourceField"/>
@@ -437,6 +441,7 @@
 <editor factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" org.eclipse.jdt.ui.ClassFileIdentifier="=NewAndroid/\/home\/yangli907\/Projects\/adt-bundle-linux-x86\/sdk\/platforms\/android-10\/android.jar&lt;android.app(Instrumentation.class"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.manifest.ManifestEditor" path="/NewAndroid/AndroidManifest.xml"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" path="/NewAndroid/res/layout/activity_main.xml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.android.ide.eclipse.editors.CommonXmlEditor" path="/NewAndroid/res/layout/activity_main.xml"/>
 </editors>
 <item historyLabel="activity_main.xml" index="0">
 <position info="not_deleted" x="672" y="251"/>
@@ -546,8 +551,24 @@
 <item historyLabel="activity_main.xml" index="6"/>
 <item historyLabel="NewAndroid Manifest" index="5"/>
 <item historyLabel="activity_main.xml" index="6"/>
-<item active="true" historyLabel="MainActivity.java" index="1">
+<item historyLabel="MainActivity.java" index="1">
 <position info="not_deleted" x="1410" y="0"/>
+</item>
+<item historyLabel="activity_main.xml" index="7"/>
+<item historyLabel="MainActivity.java" index="1">
+<position info="not_deleted" x="1639" y="0"/>
+</item>
+<item historyLabel="MainActivity.java" index="1">
+<position info="not_deleted" x="4984" y="0"/>
+</item>
+<item historyLabel="MainActivity.java" index="1">
+<position info="not_deleted" x="6601" y="0"/>
+</item>
+<item historyLabel="MainActivity.java" index="1">
+<position info="not_deleted" x="6380" y="1"/>
+</item>
+<item active="true" historyLabel="MainActivity.java" index="1">
+<position info="not_deleted" x="6601" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>

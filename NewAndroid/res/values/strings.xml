@@ -6,5 +6,6 @@
     <string name="hello_world">说点什么？</string>
     <string name="submit">提交</string>
     <string name="robotName">老黄鸡</string>
+    <string name="voice">说！</string>
 
 </resources>
