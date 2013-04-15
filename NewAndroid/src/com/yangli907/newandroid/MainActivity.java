@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -11,12 +12,15 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
@@ -25,6 +29,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
@@ -35,32 +40,16 @@ public class MainActivity extends Activity {
 	private ProgressBar progressBar = null;
 	private TextToSpeech tts = null;
 	private TextView debugField = null;
+	private RadioGroup langOpt = null;
+	
 	private String inputText = "";
 	private String response = "";
+	private String language = "";
 	private static boolean debugMode = true;
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1001;
-	private String[] dontKnow = {    
-			"我不明白你的意思。",
-		    "我不太懂你在说什么。",
-		    "我们能换一个话题吗？",
-		    "你高估我了，我没有你想的那么聪明。",
-		    "我不懂你在说什么。",
-		    "我对你的问题不太感兴趣。",
-		    "我还没想好怎么回答你的问题呢。",
-		    "我应该怎么回答你这个奇怪的问题呢？",
-		    "我不太懂你的话。",
-		    "你能跟我解释一下吗？",
-		    "你的问题让我很纠结。",
-		    "你的问题让我真的很纠结。",
-		    "你的问题难倒我了。",
-		    "我没听说过那个东西。",
-		    "天天被你们拉去聊天，我都很少了解时事了。",
-		    "不要问我那么刁钻古怪的问题啦！",
-		    "我对那个不感兴趣，跟我说说你最喜欢的明星吧。",
-		    "我不关心那个，跟我说说你最喜欢的明星吧。",
-		    "我对那个不感兴趣，跟我说说最近的新闻吧。",
-		    "我不关心那个，跟我说说最近的新闻吧。"
-		    };
+	
+	private Properties prop = new Properties();
+	private String[] dontKnow = {};
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +58,29 @@ public class MainActivity extends Activity {
 		inputField = (EditText)findViewById(R.id.inputField);
 		outputField = (EditText)findViewById(R.id.outputField);
 		progressBar = (ProgressBar)findViewById(R.id.progressBar1);
+		langOpt = (RadioGroup)findViewById(R.id.langOpt);
 		progressBar.setVisibility(View.INVISIBLE);
 		tts = new TextToSpeech(this, null);
+		try {
+			dontKnow=loadAppProperties();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
-	Object lock = new Object(); //test the synchronization for UI/background thread
-	public void onSubmit(View v){
-		
+	private String[] loadAppProperties() throws IOException{
+		Resources resources = this.getResources();
+		AssetManager assetManager = resources.getAssets();
+	    InputStream inputStream = assetManager.open("dontknow.properties");
+	    Reader reader = new InputStreamReader(inputStream, "UTF-8");
+		prop.load(reader);
+		dontKnow = prop.getProperty("dontKnowChn").split(",");
+		return dontKnow;
+	}
+	
+	Object lock = new Object(); //For synchronization for UI/background thread
+	public void onSubmit(View v){		
 		Thread thread = new Thread() {
 			public void run() {
 				runOnUiThread(new Runnable() {
@@ -104,8 +109,6 @@ public class MainActivity extends Activity {
 			}
 		};
 		thread.start();
-		
-
 	}
 	
 	public void cleanInput(View v){
@@ -117,12 +120,13 @@ public class MainActivity extends Activity {
 	private String sendRequest(String inputText){
 		List<String> cookies = getConnCookie(connUrl);
 		String msg = "";
-		String locale = "zh";
+		Log.i("Language", langOpt.getCheckedRadioButtonId()==R.id.eng?"ENGLISH":"CHINESE");
+		//String locale = "zh";
+		String locale = langOpt.getCheckedRadioButtonId()==R.id.eng?"en":"zh";
 		try {
 			Log.i("*****inputText*****", inputText);
 			msg = URLEncoder.encode(inputText,"UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		String request = "?msg="+msg+"&lc="+locale;

@@ -58,8 +58,7 @@
         android:layout_below="@+id/textView2"
         android:ems="10"
         android:enabled="false"
-        android:inputType="textMultiLine"
-        >
+        android:inputType="textMultiLine" >
 
         <requestFocus />
     </EditText>
@@ -73,6 +72,27 @@
         android:onClick="onSpeak"
         android:text="@string/voice" />
 
+    <RadioGroup
+        android:id="@+id/langOpt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/outputField"
+        android:layout_below="@+id/outputField" >
 
+        <RadioButton
+            android:id="@+id/chn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/chn" />
+
+        <RadioButton
+            android:id="@+id/eng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/eng" />
+
+        
+    </RadioGroup>
 
 </RelativeLayout>

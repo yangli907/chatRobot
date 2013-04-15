@@ -8,5 +8,7 @@
     <string name="robotName">老黄鸡</string>
     <string name="voice">说！</string>
     <string name="debugTrace">debug info...</string>
+    <string name="eng">English</string>
+    <string name="chn">Chinese</string>
 
 </resources>
