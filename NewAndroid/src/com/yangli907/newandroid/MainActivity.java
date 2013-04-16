@@ -55,10 +55,11 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		langOpt = (RadioGroup)findViewById(R.id.langOpt);
 		inputField = (EditText)findViewById(R.id.inputField);
 		outputField = (EditText)findViewById(R.id.outputField);
 		progressBar = (ProgressBar)findViewById(R.id.progressBar1);
-		langOpt = (RadioGroup)findViewById(R.id.langOpt);
+		
 		progressBar.setVisibility(View.INVISIBLE);
 		tts = new TextToSpeech(this, null);
 		try {
