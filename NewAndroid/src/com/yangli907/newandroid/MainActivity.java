@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -41,12 +42,16 @@ public class MainActivity extends Activity {
 	private TextToSpeech tts = null;
 	private TextView debugField = null;
 	private RadioGroup langOpt = null;
+	private ListView lv = null;
 	
 	private String inputText = "";
 	private String response = "";
 	private String language = "";
+	private int lastVisiblePosition = 0;
+	
 	private static boolean debugMode = true;
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1001;
+	private com.yangli907.newandroid.MessageArrayAdapter adapter;
 	
 	private Properties prop = new Properties();
 	private String[] dontKnow = {};
@@ -58,10 +63,14 @@ public class MainActivity extends Activity {
 		langOpt = (RadioGroup)findViewById(R.id.langOpt);
 		inputField = (EditText)findViewById(R.id.inputField);
 		outputField = (EditText)findViewById(R.id.outputField);
+		outputField.setVisibility(View.INVISIBLE); //temp
+		langOpt.setVisibility(View.INVISIBLE); //temp
 		progressBar = (ProgressBar)findViewById(R.id.progressBar1);
-		
 		progressBar.setVisibility(View.INVISIBLE);
 		tts = new TextToSpeech(this, null);
+		adapter = new MessageArrayAdapter(getApplicationContext(), R.layout.listitem);
+		lv = (ListView)findViewById(R.id.listView1);
+		lv.setAdapter(adapter);
 		try {
 			dontKnow=loadAppProperties();
 		} catch (IOException e) {
@@ -82,33 +91,7 @@ public class MainActivity extends Activity {
 	
 	Object lock = new Object(); //For synchronization for UI/background thread
 	public void onSubmit(View v){		
-		Thread thread = new Thread() {
-			public void run() {
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						inputText = inputField.getText().toString();
-						progressBar.setVisibility(View.VISIBLE);
-						Log.i("*****Text from UI******",inputText);
-						synchronized(lock){lock.notify();}
-					}
-				});
-				try{
-					synchronized(lock){lock.wait();}
-					response = sendRequest(inputText);
-				} 
-				catch (Exception e) {
-					e.printStackTrace();
-				}
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						outputField.setText(response);
-						progressBar.setVisibility(View.INVISIBLE);
-						}
-				});
-			}
-		};
+		Thread thread = new SendReqThread();
 		thread.start();
 	}
 	
@@ -117,6 +100,45 @@ public class MainActivity extends Activity {
 		outputField.setText("");
 	}
 	
+	public class SendReqThread extends Thread{
+		public void run() {
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					inputText = inputField.getText().toString();
+					adapter.add(new Response(true,inputText));
+					progressBar.setVisibility(View.VISIBLE);
+					Log.i("*****Text from UI******",inputText);
+					synchronized(lock){lock.notify();}
+				}
+			});
+			try{
+				synchronized(lock){lock.wait();}
+				response = sendRequest(inputText);
+			} 
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					outputField.setText(response);
+					progressBar.setVisibility(View.INVISIBLE);
+					}
+			});
+			runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					adapter.add(new Response(false, response));
+					lastVisiblePosition = lv.getLastVisiblePosition();
+					//lv.smoothScrollToPosition(lastVisiblePosition);
+					lv.smoothScrollToPosition(lv.getCount()-1);
+					inputField.setText("");
+					}
+			});
+			
+		}
+	}
 	
 	private String sendRequest(String inputText){
 		List<String> cookies = getConnCookie(connUrl);
@@ -144,7 +166,9 @@ public class MainActivity extends Activity {
 				Log.i("*****Request******", url.toString());
 			}
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.addRequestProperty("X-Forwarded-For", "10.2.0.124");
+			String host = "10.2.0."+(int)(Math.random()*1000%255);
+			con.addRequestProperty("X-Forwarded-For", host);
+			Log.i("Sender IP", host);
 			con.addRequestProperty("Cookie", cookie);
 			con.addRequestProperty("Referer", "http://www.simsimi.com/talk.htm");
 			BufferedReader reader = readStream(con.getInputStream());
