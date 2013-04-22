@@ -98,7 +98,7 @@
             android:layout_weight=".15"
             android:onClick="onSubmit"
             android:background="@drawable/green_btn"
-            android:textSize="15dp"
+            android:textSize="15sp" 
             android:padding="3dp"
             android:text="@string/submit"
             />
