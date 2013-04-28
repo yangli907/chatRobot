@@ -91,6 +91,7 @@
             android:bottom="1dp"
             android:ems="13"
             android:inputType="textMultiLine"
+            android:textStyle="bold"
             android:onClick="cleanInput"/>
 
         <Button

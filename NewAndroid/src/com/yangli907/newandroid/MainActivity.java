@@ -67,7 +67,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		langOpt = (RadioGroup)findViewById(R.id.langOpt);
 		inputField = (EditText)findViewById(R.id.inputField);
-	    type = Typeface.createFromAsset(getAssets(),"fonts/KOMTXKBI.ttf");  
+	    type = Typeface.createFromAsset(getAssets(),"fonts/JINGLEI.TTF");  
 		inputField.setTypeface(type);
 		outputField = (EditText)findViewById(R.id.outputField);
 		outputField.setVisibility(View.INVISIBLE); //temp

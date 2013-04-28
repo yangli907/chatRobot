@@ -19,9 +19,10 @@ public class MessageArrayAdapter extends ArrayAdapter<Response> {
 	private TextView messageField;
 	private List<Response> messages = new ArrayList<Response>();
 	private LinearLayout wrapper;
-
+	private Typeface type;
 	public MessageArrayAdapter(Context context, int textViewResourceId) {
 		super(context, textViewResourceId);
+		type = Typeface.createFromAsset(context.getAssets(),"fonts/JINGLEI.TTF");  
 	}
 
 	@Override
@@ -63,6 +64,7 @@ public class MessageArrayAdapter extends ArrayAdapter<Response> {
 		ViewGroup vg = (ViewGroup)row.findViewById(R.id.row);
 		View icon = (View)row.findViewById(R.id.icon);
 		View messageBody = (View)row.findViewById(R.id.messageBody);
+		((TextView)messageBody).setTypeface(type);
 		if(!response.isLeft()){
 			((ImageView) row.findViewById(R.id.icon)).setImageResource(R.drawable.chick);
 			swapView(vg, icon, messageBody);
@@ -80,8 +82,8 @@ public class MessageArrayAdapter extends ArrayAdapter<Response> {
 	}
 	
 	public void swapView(ViewGroup vg, View v1, View v2){
-		int idx_v1 = vg.indexOfChild(v1);
-		int idx_v2 = vg.indexOfChild(v2);
+		//int idx_v1 = vg.indexOfChild(v1);
+		//int idx_v2 = vg.indexOfChild(v2);
 		vg.removeAllViews();
 		vg.addView(v2);
 		vg.addView(v1);
