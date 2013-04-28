@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.speech.RecognizerIntent;
@@ -46,7 +47,8 @@ public class MainActivity extends Activity {
 	private TextView debugField = null;
 	private RadioGroup langOpt = null;
 	private ListView lv = null;
-	
+	private Typeface type = null;
+			
 	private String inputText = "";
 	private String response = "";
 	private String language = "";
@@ -65,6 +67,8 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		langOpt = (RadioGroup)findViewById(R.id.langOpt);
 		inputField = (EditText)findViewById(R.id.inputField);
+	    type = Typeface.createFromAsset(getAssets(),"fonts/KOMTXKBI.ttf");  
+		inputField.setTypeface(type);
 		outputField = (EditText)findViewById(R.id.outputField);
 		outputField.setVisibility(View.INVISIBLE); //temp
 		langOpt.setVisibility(View.INVISIBLE); //temp
@@ -280,6 +284,4 @@ public class MainActivity extends Activity {
 		    return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	
 }

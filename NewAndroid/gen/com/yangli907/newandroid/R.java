@@ -25,28 +25,36 @@ public final class R {
         public static final int activity_vertical_margin=0x7f060001;
     }
     public static final class drawable {
-        public static final int bubble_green=0x7f020000;
-        public static final int bubble_yellow=0x7f020001;
-        public static final int green_btn=0x7f020002;
-        public static final int ic_launcher=0x7f020003;
-        public static final int light_bgrd=0x7f020004;
-        public static final int mic_icon=0x7f020005;
-        public static final int rounded_edittext=0x7f020006;
+        public static final int android=0x7f020000;
+        public static final int bgtoggle=0x7f020001;
+        public static final int bubble_green=0x7f020002;
+        public static final int bubble_yellow=0x7f020003;
+        public static final int chatrobot=0x7f020004;
+        public static final int chick=0x7f020005;
+        public static final int green_btn=0x7f020006;
+        public static final int ic_launcher=0x7f020007;
+        public static final int light_bgrd=0x7f020008;
+        public static final int mic_icon=0x7f020009;
+        public static final int off=0x7f02000a;
+        public static final int on=0x7f02000b;
+        public static final int rounded_edittext=0x7f02000c;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a000d;
+        public static final int action_settings=0x7f0a000f;
         public static final int button1=0x7f0a000a;
         public static final int button2=0x7f0a0008;
         public static final int chn=0x7f0a0001;
         public static final int eng=0x7f0a0002;
+        public static final int icon=0x7f0a000d;
         public static final int inputField=0x7f0a0009;
         public static final int langOpt=0x7f0a0000;
         public static final int linearLayout1=0x7f0a0003;
         public static final int linearLayout2=0x7f0a0007;
         public static final int listView1=0x7f0a0006;
-        public static final int messageBody=0x7f0a000c;
+        public static final int messageBody=0x7f0a000e;
         public static final int outputField=0x7f0a0004;
         public static final int progressBar1=0x7f0a0005;
+        public static final int row=0x7f0a000c;
         public static final int wrapper=0x7f0a000b;
     }
     public static final class layout {

@@ -10,12 +10,28 @@
         android:layout_marginTop="5dp"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/messageBody"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/bubble_green" 
-            android:textColor="@android:color/primary_text_light"/>
+        <LinearLayout
+            android:id="@+id/row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:padding="1dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/chick" />
+
+            <TextView
+                android:id="@+id/messageBody"
+                android:typeface="serif"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bubble_green"
+                android:textColor="@android:color/primary_text_light" />
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>
