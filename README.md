@@ -24,7 +24,7 @@ TEST#1
 request: {'latitude': 37.448988, 'longitude': -122.160879, 'start_date': '2016-07-24T11:58-0700', 'end_date': '2016-07-24T12:58-0700', 'accuracy': 5}
 guessed_location: 2374039
 
-nearby\_locations:
+nearby_locations:
 rank#1:
 location_id=2374039
 score=0.9979414523213952
